@@ -1,5 +1,7 @@
 package com.url.urlshortener.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
@@ -21,15 +23,25 @@ UrlShortenerDao urlShortenerDao;
 	public static final int BASE = base62Chars.length();
 	public String shortenUrl(UrlRequestBean urlRequestBean) {
 		// TODO Main coding logic will go here
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		UrlsData  urlData= new UrlsData();
-		urlData.setCreatedDate(date);
-		
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DATE, 1); 
 		String oldUrl = urlRequestBean.getOrginalUrl();
+		
+		
 		Random rand = new Random();
 		long randomNumber = Math.abs(rand.nextLong());
 		System.out.println("Random number " +randomNumber);
 		String base62Num = convertBase10ToBase62(randomNumber);
+		urlData.setIdHash(base62Num);
+		urlData.setCreatedDate(date);
+		urlData.setOrginalUrl(oldUrl);
+		urlData.setExpirationDate(c.getTime());
+		urlShortenerDao.insertUrlData(urlData);
+		//urlData.setShortenedUrl(shortenedUrl);;
 		return base62Num;
 //		return null;
 	}
