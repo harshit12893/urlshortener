@@ -2,14 +2,14 @@ package com.url.urlshortener.beans;
 
 public class UrlRequestBean {
 	
-	private String orginalUrl;
+	private String originalUrl;
 
 	public String getOrginalUrl() {
-		return orginalUrl;
+		return originalUrl;
 	}
 
-	public void setOrginalUrl(String orginalUrl) {
-		this.orginalUrl = orginalUrl;
+	public void setOrginalUrl(String originalUrl) {
+		this.originalUrl = originalUrl;
 	}
 	
 	

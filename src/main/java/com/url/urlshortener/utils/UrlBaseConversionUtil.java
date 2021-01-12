@@ -35,4 +35,13 @@ public class UrlBaseConversionUtil {
 		}
 		return result;
 	}
+	
+	public String formatLocalUrl(String localUrl) {
+		String []addressComponents = localUrl.split("/");
+		StringBuilder sb= new StringBuilder();
+		for(int i=0;i<addressComponents.length-1;i++)
+			sb.append(addressComponents[i]);
+		sb.append("/");
+		return sb.toString();
+		}
 }
