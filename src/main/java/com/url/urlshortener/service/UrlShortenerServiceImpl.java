@@ -1,6 +1,5 @@
 package com.url.urlshortener.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 	@Override
 	public String shortenUrl(UrlRequestBean urlRequestBean,String localUrl) {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
 		Date date = new Date();
 		UrlData urlData= new UrlData();
 		Calendar c = Calendar.getInstance();
@@ -46,7 +45,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 		
 		return shortenedUrl;
 	}
-	
+	@Override
 	public String getLongUrlFromIdHash(String idHash) {
 		
 		Optional<UrlData> urlDataOption = urlRepository.findById(idHash);
