@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import com.url.urlshortener.utils.UrlBaseConversionUtil;
 @Service
 public class UrlShortenerServiceImpl implements UrlShortenerService {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UrlShortenerService.class);
 	@Autowired
 	UrlBaseConversionUtil conversionUtil;
 	@Autowired
@@ -24,7 +27,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 	@Override
 	public String shortenUrl(UrlRequestBean urlRequestBean,String localUrl) {
 		
-		
+		LOGGER.info("Shortening url : "+urlRequestBean.getOrginalUrl());
 		Date date = new Date();
 		UrlData urlData= new UrlData();
 		Calendar c = Calendar.getInstance();
@@ -41,6 +44,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 		String baseurl = conversionUtil.formatLocalUrl(localUrl);
 		String shortenedUrl = baseurl + base62Num;
 		urlData.setShortenedUrl(shortenedUrl);
+		LOGGER.info("Saving Url {} data to db ",shortenedUrl);
 		urlRepository.save(urlData);
 		
 		return shortenedUrl;
@@ -50,6 +54,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 		
 		Optional<UrlData> urlDataOption = urlRepository.findById(idHash);
 		UrlData urlData =null;
+		LOGGER.info("Converting shortened url {} back to original ",idHash);
 		if(urlDataOption.isPresent()) {
 			 urlData = urlDataOption.get();
 			 return urlData.getOrginalUrl();
