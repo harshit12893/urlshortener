@@ -1,9 +1,16 @@
 package com.url.urlshortener.beans;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UrlResponseBean {
 	private String shortUrl;
-	private String status;
-	private String message;
+	
+	@JsonCreator
+	public UrlResponseBean(@JsonProperty("shortUrl") String shortUrl) {
+		
+		this.shortUrl = shortUrl;
+	}
 	
 	public String getShortUrl() {
 		return shortUrl;
@@ -11,18 +18,5 @@ public class UrlResponseBean {
 	public void setShortUrl(String shortUrl) {
 		this.shortUrl = shortUrl;
 	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getMessage() {
-		return message;
-	}
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
 	
 }

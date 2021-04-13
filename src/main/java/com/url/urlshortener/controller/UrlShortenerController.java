@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.url.urlshortener.beans.UrlRequestBean;
+import com.url.urlshortener.beans.UrlResponseBean;
 import com.url.urlshortener.service.UrlShortenerService;
 
 @RestController
@@ -24,12 +25,14 @@ public class UrlShortenerController {
 	@Autowired
 	private UrlShortenerService urlShortenerService;
 
-	@RequestMapping(value= "/urlshortener", method = RequestMethod.POST,consumes = {"application/json"}, produces = {"application/json"})
-	public String shortenUrl(@RequestBody UrlRequestBean urlRequestBean,HttpServletRequest request) {		
+	@RequestMapping(value= "/urlShortener", method = RequestMethod.POST,consumes = {"application/json"}, produces = {"application/json"})
+	public UrlResponseBean shortenUrl(@RequestBody UrlRequestBean urlRequestBean,HttpServletRequest request) {		
 		LOGGER.info("Request received to shorten the url : "+ urlRequestBean.getOrginalUrl());
-		String shortUrl = urlShortenerService.shortenUrl(urlRequestBean, request.getRequestURI());
+		String shortUrl = urlShortenerService.shortenUrl(urlRequestBean, request.getRequestURI(),false);
+		String hostDetails = request.getScheme().trim()+"://"+request.getServerName()+":"+request.getServerPort();
 		LOGGER.info("Request completed, shortened url is : "+ shortUrl);
-		return shortUrl;
+		UrlResponseBean response = new UrlResponseBean(hostDetails+shortUrl);
+		return response;
 		
 	}
 	
@@ -37,7 +40,32 @@ public class UrlShortenerController {
 	public RedirectView redirectUrl( @PathVariable String id,HttpServletRequest request,HttpServletResponse response) {
 		LOGGER.info("Redirection request received for short url : "+id);
 		RedirectView redirectView = new RedirectView();
-		String longUrl = urlShortenerService.getLongUrlFromIdHash(id);
+		String longUrl = urlShortenerService.getLongUrlFromIdHash(id,false);
+		if(!longUrl.contains("http"))
+		redirectView.setUrl("http://"+longUrl);
+		else
+		redirectView.setUrl(longUrl);
+		LOGGER.info("Redirection request completed, complete url is : "+longUrl);
+		return redirectView;
+		
+	}
+	
+	@RequestMapping(value= "/urlShortenerRedis", method = RequestMethod.POST,consumes = {"application/json"}, produces = {"application/json"})
+	public UrlResponseBean shortenUrlByRedis(@RequestBody UrlRequestBean urlRequestBean,HttpServletRequest request) {		
+		LOGGER.info("Request received to shorten the url : "+ urlRequestBean.getOrginalUrl());
+		String shortUrl = urlShortenerService.shortenUrl(urlRequestBean, request.getRequestURI(),true);
+		String hostDetails = request.getScheme().trim()+"://"+request.getServerName()+":"+request.getServerPort();
+		LOGGER.info("Request completed, shortened url is : "+ shortUrl);
+		UrlResponseBean response = new UrlResponseBean(hostDetails+shortUrl);
+		return response;
+		
+	}
+	
+	@RequestMapping(value = "/redis/{id}", method=RequestMethod.GET)
+	public RedirectView redirectUrlFromRedis( @PathVariable String id,HttpServletRequest request,HttpServletResponse response) {
+		LOGGER.info("Redirection request received for short url : "+id);
+		RedirectView redirectView = new RedirectView();
+		String longUrl = urlShortenerService.getLongUrlFromIdHash(id,true);
 		if(!longUrl.contains("http"))
 		redirectView.setUrl("http://"+longUrl);
 		else

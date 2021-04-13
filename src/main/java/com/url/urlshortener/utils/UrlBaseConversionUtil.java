@@ -2,9 +2,12 @@ package com.url.urlshortener.utils;
 
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class UrlBaseConversionUtil {
-	
+
+
+
 	public String convertBase10ToBase62(long inputNumber) {
 
 		StringBuilder base62=new StringBuilder("");
@@ -44,4 +47,6 @@ public class UrlBaseConversionUtil {
 		sb.append("/");
 		return sb.toString();
 		}
+	
+	
 }
