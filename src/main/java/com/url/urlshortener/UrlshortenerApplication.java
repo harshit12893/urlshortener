@@ -12,11 +12,5 @@ public class UrlshortenerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UrlshortenerApplication.class, args);
 	}
-//	 @Bean
-//	   public Docket api() {
-//	      return new Docket(DocumentationType.SWAGGER_2).select()
-//	         .apis(RequestHandlerSelectors.basePackage("com.url.urlshortener"))
-//	         .build();
-//	   }
 
 }

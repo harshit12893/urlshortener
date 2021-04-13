@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UrlBaseConversionUtil {
 
-
-
 	public String convertBase10ToBase62(long inputNumber) {
 
 		StringBuilder base62=new StringBuilder("");

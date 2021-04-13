@@ -46,7 +46,7 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 			String base62Num = conversionUtil.convertBase10ToBase62(incId);
 			String baseurl = conversionUtil.formatLocalUrl(localUrl);
 			String shortenedUrl = baseurl +"urlShortenerRedis/"+ base62Num;
-			urlRedisRepo.saveUrl(base62Num,shortenedUrl ,urlRequestBean.getOrginalUrl());
+			urlRedisRepo.saveUrl(base62Num ,urlRequestBean.getOrginalUrl());
 			LOGGER.info("Saving Url {} data to redis db ",shortenedUrl);
 			return shortenedUrl;
 		} else {
