@@ -36,7 +36,7 @@ public class UrlShortenerController {
 		
 	}
 	
-	@RequestMapping(value = "/{id}", method=RequestMethod.GET)
+	@RequestMapping(value = "/urlShortener/{id}", method=RequestMethod.GET)
 	public RedirectView redirectUrl( @PathVariable String id,HttpServletRequest request,HttpServletResponse response) {
 		LOGGER.info("Redirection request received for short url : "+id);
 		RedirectView redirectView = new RedirectView();
@@ -61,7 +61,7 @@ public class UrlShortenerController {
 		
 	}
 	
-	@RequestMapping(value = "/redis/{id}", method=RequestMethod.GET)
+	@RequestMapping(value = "/urlShortenerRedis/{id}", method=RequestMethod.GET)
 	public RedirectView redirectUrlFromRedis( @PathVariable String id,HttpServletRequest request,HttpServletResponse response) {
 		LOGGER.info("Redirection request received for short url : "+id);
 		RedirectView redirectView = new RedirectView();
